@@ -1,4 +1,4 @@
-from collections import defaultdict, deque
+from collections import Counter, defaultdict, deque
 from helpers import memoize
 from copy import deepcopy
 from enum import Enum
