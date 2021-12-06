@@ -5,9 +5,7 @@ INPUT_DATA = [int(x) for x in INPUT_DATA[0].split(",")]
 
 fishes = deque()
 for i in range(0, 9):
-    fishes.append(0)
-for fish in INPUT_DATA:
-    fishes[fish] += 1
+    fishes.append(INPUT_DATA.count(i))
 
 for i in range(0, 256):
     fishes.rotate(-1)
