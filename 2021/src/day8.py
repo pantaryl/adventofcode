@@ -79,41 +79,27 @@ class SevenSegment:
 part2 = 0
 for line in INPUT_DATA:
     first = sorted(line[0], key=lambda x: len(x))
-    found = defaultdict(list)
-
-    counts = defaultdict(int)
-    for char in 'abcdefg':
-        for item in first:
-            counts[char] += item.count(char)
+    counts = [(char, sum([item.count(char) for item in first])) for char in 'abcdefg']
     found = {}
-    while (len(counts.keys())) > 0:
-        for key in list(counts.keys()):
-            val = counts[key]
-            if val == 9:
-                found[key] = 5
-                counts.pop(key)
-            elif val == 6:
-                found[key] = 1
-                counts.pop(key)
-            elif val == 4:
-                found[key] = 4
-                counts.pop(key)
-            elif val == 7 and any([True if key not in x else False for x in first[6:9]]):
-                # first[6:9] are all of the 6 segment cases, and only one of them is missing Segment 3.
-                found[key] = 3
-                counts.pop(key)
-            elif val == 7:
-                # If we didn't already find Segment 3, this must be Segment 6.
-                found[key] = 6
-                counts.pop(key)
-            elif val == 8 and key not in first[0]:
-                # Segment 0 (Top) is not in the Number 1.
-                found[key] = 0
-                counts.pop(key)
-            elif val == 8:
-                # If we didn't already find Segment 0, this must be Segment 2.
-                found[key] = 2
-                counts.pop(key)
+    for key, val in counts:
+        if val == 9:
+            found[key] = 5
+        elif val == 6:
+            found[key] = 1
+        elif val == 4:
+            found[key] = 4
+        elif val == 7 and any([True if key not in x else False for x in first[6:9]]):
+            # first[6:9] are all of the 6 segment cases, and only one of them is missing Segment 3.
+            found[key] = 3
+        elif val == 7:
+            # If we didn't already find Segment 3, this must be Segment 6.
+            found[key] = 6
+        elif val == 8 and key not in first[0]:
+            # Segment 0 (Top) is not in the Number 1.
+            found[key] = 0
+        elif val == 8:
+            # If we didn't already find Segment 0, this must be Segment 2.
+            found[key] = 2
 
     outputs = 0
     for item in line[1]:
