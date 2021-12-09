@@ -9,7 +9,7 @@ caves = squareGridFromChars(INPUT_DATA, isInts=True)
 lowPoints = []
 for pos, val in caves.items():
     lower = True
-    for neighbor in getOrthagonalSquareNeighbors():
+    for neighbor in getOrthogonalSquareNeighbors():
         if pos + neighbor in caves:
             if caves[pos + neighbor] <= val:
                 lower = False
@@ -33,7 +33,7 @@ for pos in lowPointPos:
         assert(currentVal != 9)
         seen.add(currentPos)
 
-        for neighbor in getOrthagonalSquareNeighbors():
+        for neighbor in getOrthogonalSquareNeighbors():
             neighborPos = currentPos + neighbor
             neighborVal = caves.get(neighborPos, None)
             if neighborVal and neighborPos not in seen and neighborVal > currentVal and neighborVal != 9:

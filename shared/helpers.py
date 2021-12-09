@@ -24,7 +24,7 @@ def squareGridFromChars(input: List[str], isInts=False) -> Dict[complex, Union[i
 
     return grid
 
-def getOrthagonalSquareNeighbors() -> List[complex]:
+def getOrthogonalSquareNeighbors() -> List[complex]:
     return [
         0-1j,  # up
         0+1j,  # down
