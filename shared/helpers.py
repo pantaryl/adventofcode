@@ -1,5 +1,8 @@
 from typing import Dict, List, Union
 
+FILLED_CHAR = '▮'
+EMPTY_CHAR  = ' '
+
 def memoize(f):
     memo = {}
     def helper(index, *args):
