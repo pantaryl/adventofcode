@@ -48,11 +48,11 @@ def getAllSquareNeighbors() -> List[complex]:
          1 + 1j, # down-right
     ]
 
-def getStringFromGrid(grid: dict, set: str, printGrid: False) -> str:
+def getStringFromGrid(grid: dict, set: str, printGrid: bool = False) -> str:
     CHARS = {
         '011010011001111110011001': 'A',
         '111010011110100110011110': 'B',
-        #'011010011000100010010110': 'C',
+        '011010011000100010010110': 'C',
         '111010011001100110011110': 'D',
         '111110001110100010001111': 'E',
         '111110001110100010001000': 'F',
