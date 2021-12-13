@@ -56,23 +56,6 @@ def fold(grid, dir, num):
             pos = complex(num, y)
             if pos in grid: grid.pop(pos)
 
-def printGrid(grid):
-    minX = int(min([x.real for x in grid.keys()]))
-    maxX = int(max([x.real for x in grid.keys()]))
-    minY = int(min([y.imag for y in grid.keys()]))
-    maxY = int(max([y.imag for y in grid.keys()]))
-
-    for y in range(minY, maxY + 1):
-        for x in range(minX, maxX + 1):
-            pos = complex(x, y)
-            val = grid[pos]
-            val = FILLED_CHAR if val else EMPTY_CHAR
-            print(val, end='')
-        print()
-
-    print()
-    print()
-
 fold(grid, folds[0][0], folds[0][1])
 #printGrid(grid)
 
@@ -86,4 +69,4 @@ print(count)
 for dir, num in folds[1:]:
     fold(grid, dir, num)
 
-printGrid(grid)
+getStringFromGrid(grid, 'X', printGrid=True)
