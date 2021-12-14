@@ -40,31 +40,22 @@ counts = defaultdict(int)
 for rule, val in rules.items():
     counts[rule] += countSubstring(INPUT_DATA[0], rule)
 
+charCounts = defaultdict(int)
+for char in INPUT_DATA[0]:
+    charCounts[char] += 1
+
 for i in range(0, 40):
-    newCounts = defaultdict(int)
-    for rule, val in rules.items():
-        if counts[rule] > 0:
-            pairL = rule[0] + val
-            pairR = val + rule[1]
-            newCounts[pairL] += counts[rule]
-            newCounts[pairR] += counts[rule]
+    for rule, count in counts.copy().items():
+        val   = rules[rule]
+        pairL = rule[0] + val
+        pairR = val + rule[1]
 
-    counts = newCounts
+        counts[pairL] += count
+        counts[pairR] += count
+        counts[rule]  -= count
 
-results = defaultdict(int)
-for rule, count in newCounts.items():
-    results[rule[0]] += count
-    results[rule[1]] += count
-for char in results.keys():
-    results[char] //= 2
+        charCounts[val] += count
 
-firstChar = INPUT_DATA[0][0]
-lastChar  = INPUT_DATA[0][-1]
-results[firstChar] += 1
-if firstChar != lastChar:
-    results[lastChar] += 1
-
-most = max([count for _, count in results.items()])
-least = min([count for _, count in results.items()])
-
+most  = max([count for _, count in charCounts.items()])
+least = min([count for _, count in charCounts.items()])
 print(most - least)
