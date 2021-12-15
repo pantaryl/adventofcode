@@ -9,40 +9,12 @@ begin = complex(0, 0)
 end   = complex(len(INPUT_DATA[0]) - 1, len(INPUT_DATA) - 1)
 
 # Part 1
-def aStar(start, goal, fullGrid):
-    def reconstructPath(path, current):
-        totalPath = deque([ current ])
-        while current in path:
-            current = path[current]
-            totalPath.appendleft(current)
-        return totalPath
+heuristic = lambda x: 0
+adjFunc = lambda grid, current: \
+    [current + neighbor for neighbor in getOrthogonalSquareNeighbors() if current + neighbor in grid]
+scoreFunc = lambda grid, pos: grid[pos]
 
-    discovered = [(0, OrderedComplex(start))]
-    heapq.heapify(discovered)
-    path       = {}
-    gScore     = defaultdict(lambda: sys.maxsize)
-    gScore[start] = 0
-
-    while discovered:
-        current = heapq.heappop(discovered)[1]
-        if current == goal:
-            return reconstructPath(path, current)
-
-        for neighbor in getOrthogonalSquareNeighbors():
-            neighborPos = current + neighbor
-            if neighborPos in fullGrid:
-                tentativeGScore = gScore[current] + fullGrid[neighborPos]
-                if tentativeGScore < gScore[neighborPos]:
-                    # This path to neighbor is better than any previous one.
-                    path[neighborPos] = current
-                    gScore[neighborPos] = tentativeGScore
-                    priority = (tentativeGScore, OrderedComplex(neighborPos))
-                    if priority not in discovered:
-                        heapq.heappush(discovered, priority)
-
-    return None
-
-print(sum([grid[x] for x in aStar(begin, end, grid) if x != begin]))
+print(sum([grid[x] for x in aStar(grid, begin, end, heuristic, adjFunc, scoreFunc) if x != begin]))
 
 # Part 2
 # Got to make our bigger grid
@@ -59,4 +31,4 @@ for y in range(0, 5):
             totalGrid[newPos] = newVal
 
 end = complex(len(INPUT_DATA[0]) * 5 - 1, len(INPUT_DATA) * 5 - 1)
-print(sum([totalGrid[x] for x in aStar(complex(0, 0), end, totalGrid) if x != complex(0, 0)]))
+print(sum([totalGrid[x] for x in aStar(totalGrid, begin, end, heuristic, adjFunc, scoreFunc) if x != begin]))
