@@ -4,7 +4,7 @@ from copy import deepcopy
 from enum import Enum
 import os, parse
 from .math_utils import *
-from .helpers    import *
+from .grid_utils    import *
 
 import __main__
 
