@@ -1,5 +1,4 @@
 from shared import *
-import sys, heapq
 
 # Input data is in INPUT_DATA.
 # INPUT_DATA = [int(x) for x in INPUT_DATA]
