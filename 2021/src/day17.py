@@ -11,8 +11,8 @@ for x in range(xStart, xEnd + 1):
     for y in range(yStart, yEnd + 1):
         goals.add(complex(x, y))
 
-for x in range(0, xEnd + 1):
-    for y in range(yStart - 1, abs(yStart) + 1):
+for x in range(-abs(xStart), abs(xEnd) + 1):
+    for y in range(-abs(yStart) - 1, abs(yStart) + 1):
         currentPos = complex(0, 0)
         startingVelocity = complex(x, y)
         velocity   = startingVelocity
