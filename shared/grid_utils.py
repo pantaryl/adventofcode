@@ -1,6 +1,12 @@
 from typing import Dict, List, Union
 import sys
 
+# Complex numbers in Python! == i + nj (x + ny), good for coordinates
+# complex*+imaginary to rotate left/ccw, complex*-imaginary to rotate right/cw
+# For example:
+# Rotate CCW by 270 degrees:
+#    val *= complex(0, 1) ** 3 [each power represents 90 degrees]
+
 FILLED_CHAR = '▮'
 EMPTY_CHAR  = ' '
 
