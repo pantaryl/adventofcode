@@ -1,3 +1,5 @@
+from itertools import permutations
+
 # This came courtesy of some helpful research regarding Chinese Remainder Theorem,
 # which is number theory I am 100% not familiar with.
 

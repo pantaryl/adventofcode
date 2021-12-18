@@ -1,4 +1,4 @@
-from typing import Dict, List, Union
+from typing import *
 import sys
 
 # Complex numbers in Python! == i + nj (x + ny), good for coordinates
