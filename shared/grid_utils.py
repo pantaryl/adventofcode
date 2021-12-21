@@ -10,12 +10,26 @@ import sys
 FILLED_CHAR = '▮'
 EMPTY_CHAR  = ' '
 
-def squareGridFromChars(input: List[str], isInts=False) -> Dict[complex, Union[int, str]]:
-    grid = {}
+def squareGridFromChars(input: List[str],
+                        isInts=False,
+                        conversionDict: dict = None,
+                        toSetOnValue = None) -> Dict[complex, Union[int, str]]:
+    if toSetOnValue:
+        grid = set()
+    else:
+        grid = {}
 
     for j, line in enumerate(input):
         for i, char in enumerate(line):
-            grid[complex(i, j)] = int(char) if isInts else char
+            if toSetOnValue:
+                if char == toSetOnValue:
+                    grid.add(complex(i, j))
+            elif conversionDict:
+                grid[complex(i, j)] = conversionDict[char]
+            elif isInts:
+                grid[complex(i, j)] = int(char)
+            else:
+                grid[complex(i, j)] = char
 
     return grid
 
