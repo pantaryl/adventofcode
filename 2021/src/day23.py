@@ -27,7 +27,18 @@ destinations = {
     8: 'D',
 }
 
-def heuristic(neighbor): return 0
+def heuristic(neighbor):
+    global depth
+    score = 0
+
+    for i, val in enumerate(neighbor):
+        for char in val:
+            if char != '.':
+                destCol = destinations[char]
+                score += costs[char] * (abs(destCol - i) + (depth - neighbor[destCol].count(char)))
+
+    return score
+
 def scoreFunc(grid, current, neighbor):
     char      = '.'
     toIndex   = -1
@@ -164,7 +175,6 @@ assert(len(state) == 11)
 part1 = list(aStar(None, tuple(state), tuple(goal), heuristic, adjFunc, scoreFunc))
 score = sum(scoreFunc(None, x, y) for x, y in zip(part1[0:], part1[1:]))
 print(score)
-
 # Part 2
 depth = 4
 state = [
