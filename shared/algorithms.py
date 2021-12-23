@@ -10,15 +10,16 @@ def memoize(f):
         return memo[index]
     return helper
 
-def aStar(grid, start, goal, heuristic, adjFunc, scoreFunc):
+def aStar(grid, start, goal, heuristic, adjFunc, scoreFunc, metGoalFunc=None, printStateFunc=None):
     def reconstructPath(path, current):
         totalPath = deque([ current ])
         while current in path:
             current = path[current]
             totalPath.appendleft(current)
+            current = current
         return totalPath
 
-    discovered = [(0, OrderedComplex(start))]
+    discovered = [(0, start)]
     heapq.heapify(discovered)
     path       = {}
 
@@ -27,17 +28,22 @@ def aStar(grid, start, goal, heuristic, adjFunc, scoreFunc):
 
     while discovered:
         current = heapq.heappop(discovered)[1]
-        if current == goal:
+
+        if printStateFunc: printStateFunc(current)
+        if metGoalFunc:
+            if metGoalFunc(current, goal):
+                return reconstructPath(path, current)
+        elif current == goal:
             return reconstructPath(path, current)
 
-        for neighbor in adjFunc(grid, current):
-            tentativeGScore = gScore[current] + scoreFunc(grid, neighbor)
+        for neighbor in adjFunc((grid, current)):
+            tentativeGScore = gScore[current] + scoreFunc(grid, current, neighbor)
             if tentativeGScore < gScore[neighbor]:
                 # This path to neighbor is better than any previous one.
-                path[neighbor] = current
                 gScore[neighbor] = tentativeGScore
                 fScore = tentativeGScore + heuristic(neighbor)
-                priority = (fScore, OrderedComplex(neighbor))
+                path[neighbor] = current
+                priority = (fScore, neighbor)
                 if priority not in discovered:
                     heapq.heappush(discovered, priority)
 

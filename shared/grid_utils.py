@@ -1,4 +1,5 @@
 from typing import *
+from .classes import OrderedComplex
 import sys
 
 # Complex numbers in Python! == i + nj (x + ny), good for coordinates
@@ -23,34 +24,34 @@ def squareGridFromChars(input: List[str],
         for i, char in enumerate(line):
             if toSetOnValue:
                 if char == toSetOnValue:
-                    grid.add(complex(i, j))
+                    grid.add(OrderedComplex(i, j))
             elif conversionDict:
-                grid[complex(i, j)] = conversionDict[char]
+                grid[OrderedComplex(i, j)] = conversionDict[char]
             elif isInts:
-                grid[complex(i, j)] = int(char)
+                grid[OrderedComplex(i, j)] = int(char)
             else:
-                grid[complex(i, j)] = char
+                grid[OrderedComplex(i, j)] = char
 
     return grid
 
-def getOrthogonalSquareNeighbors() -> List[complex]:
+def getOrthogonalSquareNeighbors() -> List[OrderedComplex]:
     return [
-        0-1j,  # up
-        0+1j,  # down
-        -1+0j, # left
-        1+0j   # right
+        OrderedComplex(0-1j),  # up
+        OrderedComplex(0+1j),  # down
+        OrderedComplex(-1+0j), # left
+        OrderedComplex(1+0j)   # right
     ]
 
-def getAllSquareNeighbors() -> List[complex]:
+def getAllSquareNeighbors() -> List[OrderedComplex]:
     return [
-        -1 - 1j, # up-left
-         0 - 1j, # up
-         1 - 1j, # up-right
-        -1 + 0j, # left
-         1 + 0j, # right
-        -1 + 1j, # down-left
-         0 + 1j, # down
-         1 + 1j, # down-right
+        OrderedComplex(-1 - 1j), # up-left
+        OrderedComplex( 0 - 1j), # up
+        OrderedComplex( 1 - 1j), # up-right
+        OrderedComplex(-1 + 0j), # left
+        OrderedComplex( 1 + 0j), # right
+        OrderedComplex(-1 + 1j), # down-left
+        OrderedComplex( 0 + 1j), # down
+        OrderedComplex( 1 + 1j), # down-right
     ]
 
 def getStringFromGrid(grid: dict, set: str, printGrid: bool = False) -> str:

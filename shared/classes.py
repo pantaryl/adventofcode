@@ -17,6 +17,12 @@ class OrderedComplex(complex):
     def __gt__(self, other):
         return self.real > other.real and self.imag > other.imag
 
+    def __add__(self, other):
+        return OrderedComplex(complex(self.real, self.imag) + complex(other.real, other.imag))
+
+    def __sub__(self, other):
+        return OrderedComplex(complex(self.real, self.imag) - complex(other.real, other.imag))
+
 class Vector3:
     x: int
     y: int
