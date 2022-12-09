@@ -54,6 +54,32 @@ def getAllSquareNeighbors() -> List[OrderedComplex]:
         OrderedComplex( 1 + 1j), # down-right
     ]
 
+def printSetGrid(known_pos: Set[complex],
+                 char_table: Optional[Dict[complex, str]],
+                 known:str = '#',
+                 empty:str = '.',
+                 x_dim: Optional[Tuple[int, int]] = None,
+                 y_dim: Optional[Tuple[int, int]] = None):
+    if x_dim is None:
+        x_dim = (min([int(x.real) for x in known_pos]), max([int(x.real) for x in known_pos]))
+    if y_dim is None:
+        y_dim = (min([int(x.imag) for x in known_pos]), max([int(x.imag) for x in known_pos]))
+
+    for y in range(y_dim[0], y_dim[1] + 1):
+        for x in range(x_dim[0], x_dim[1] + 1):
+            pos = complex(x, y)
+            if pos in known_pos:
+                if char_table is None:
+                    print(known, end='')
+                else:
+                    print(char_table[pos], end='')
+            else:
+                if char_table and pos in char_table:
+                    print(char_table[pos], end='')
+                else:
+                    print(empty, end='')
+        print()
+
 def getStringFromGrid(grid: dict, set: str, printGrid: bool = False) -> str:
     CHARS = {
         '011010011001111110011001': 'A',
