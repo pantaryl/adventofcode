@@ -124,18 +124,19 @@ def getStringFromGrid(grid: dict, set: str, printGrid: bool = False) -> str:
     maxX = int(max([x.real if val == set else -sys.maxsize for x, val in grid.items()]))
     minY = int(min([y.imag if val == set else  sys.maxsize for y, val in grid.items()]))
     maxY = int(max([y.imag if val == set else -sys.maxsize for y, val in grid.items()]))
-    # print(f"min({minX}, {minY}) -> max({maxX}, {maxY})")
+    #print(f"min({minX}, {minY}) -> max({maxX}, {maxY})")
 
     assert(maxY - minY + 1 == 6)
 
-    for y in range(minY, maxY + 1):
-        for x in range(minX, maxX + 1):
-            pos = complex(x, y)
-            val = grid[pos]
-            val = FILLED_CHAR if val == set else EMPTY_CHAR
-            print(val, end='')
-        print()
-    print(flush=True)
+    if printGrid:
+        for y in range(minY, maxY + 1):
+            for x in range(minX, maxX + 1):
+                pos = complex(x, y)
+                val = grid[pos]
+                val = FILLED_CHAR if val == set else EMPTY_CHAR
+                print(val, end='')
+            print()
+        print(flush=True)
 
     # Standard AoC Font is 4x6 grid.
     charNum = 0
