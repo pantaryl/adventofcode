@@ -1,5 +1,3 @@
-import parse
-
 def countSubstring(string, substring):
     count = 0
     start = 0
