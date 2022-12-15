@@ -11,6 +11,9 @@ import sys
 FILLED_CHAR = '▮'
 EMPTY_CHAR  = ' '
 
+def manhattanDistance(start: complex, end:complex):
+    return abs(int(start.real) - int(end.real)) + abs(int(start.imag) - int(end.imag))
+
 def squareGridFromChars(input: List[str],
                         isInts=False,
                         conversionDict: dict = None,
