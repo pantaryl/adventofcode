@@ -5,6 +5,11 @@ from itertools import combinations, permutations
 # This ensures that your numbers do not get unwieldy while still allowing you to test them for the various
 # cycles/divisors.
 
+# For 1D segment overlaps:
+def overlap_1d(min1, max1, min2, max2):
+    return max(0, min(max1, max2) - max(min1, min2)) + \
+           1 if max1 <= min2 or min1 <= max2 else 0
+
 ########################################################################################################################
 # This came courtesy of some helpful research regarding Chinese Remainder Theorem,
 # which is number theory I am 100% not familiar with.

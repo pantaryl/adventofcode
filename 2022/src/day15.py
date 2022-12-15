@@ -16,21 +16,6 @@ for data in INPUT_DATA:
     sensors.append((sensor, beacon))
     beacons.add(beacon)
 
-def mergeIntervals(intervals):
-    # Sort the array on the basis of start values of intervals.
-    intervals.sort()
-
-    stack = [ intervals[0] ]
-    for i in intervals[1:]:
-        # Check for overlapping interval,
-        # if interval overlap
-        if stack[-1][0] <= i[0] <= stack[-1][-1]:
-            stack[-1][-1] = max(stack[-1][-1], i[-1])
-        else:
-            stack.append(i)
-            
-    return stack
-
 def get_total_per_y(y_val):
     num_spots = []
     for i, data in enumerate(sensors):
@@ -74,13 +59,9 @@ for sensor, beacon in sensors:
 min_y = max(min_y, 0)
 max_y = min(max_y, problem_y)
 
-def overlap(min1, max1, min2, max2):
-    return max(0, min(max1, max2) - max(min1, min2)) + \
-           1 if max1 <= min2 or min1 <= max2 else 0
-
 for y in range(min_y, max_y + 1):
     intervals, total_count  = get_total_per_y(y)
-    total_in_range = sum([overlap(x1, x2, 0, problem_y) for x1, x2 in intervals])
+    total_in_range = sum([overlap_1d(x1, x2, 0, problem_y) for x1, x2 in intervals])
 
     # range of [0, problem_y] is a total of problem_y + 1
     # we're looking for the only y where we're off of the total by 1,
