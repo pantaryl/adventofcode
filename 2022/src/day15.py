@@ -42,7 +42,7 @@ def get_total_per_y(y_val):
     return intervals, total_count
 
 # Part 1
-y_val = 10
+y_val = 2000000
 print(get_total_per_y(y_val)[1])
 
 # Part 2
