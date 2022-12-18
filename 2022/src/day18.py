@@ -20,7 +20,9 @@ for point in points:
 print(surface_area)
 
 # Part 2
-surface_area = 0
+# Use a flood-fill BFS to determine all coords of air that are not lava that can be reached from a "way outside point".
+# Then calculate the surfaces adjacent to these coords.
+# Anything completely surrounded by lava will be unreachable by the flood-fill.
 min_x, max_x, min_y, max_y, min_z, max_z = 500, 0, 500, 0, 500, 0
 for point in points:
     x, y, z = point
@@ -31,49 +33,39 @@ for point in points:
     min_y = min(min_y, y)
     min_z = min(min_z, z)
 
-max_x, max_y, max_z = max_x + 1, max_y + 1, max_z + 1
-min_x, min_y, min_z = min_x - 1, min_y - 1, min_z - 1
+max_x, max_y, max_z = max_x + 2, max_y + 2, max_z + 2
+min_x, min_y, min_z = min_x - 2, min_y - 2, min_z - 2
 way_outside_point = (max_x, max_y, max_z)
-valid_neighbors = set()
-invalid_neighbors = set()
-for idx, point in enumerate(points):
-    x, y, z = point
-    neighbors = set([ (x + 1, y, z), ( x - 1, y, z), (x, y + 1, z), (x, y - 1, z), (x, y, z + 1), (x, y, z - 1) ])
 
-    # def aStar(grid, start, goal, heuristic, adjFunc, scoreFunc, metGoalFunc=None, printStateFunc=None):
-    def heuristic(neighbor):
-        if neighbor in valid_neighbors: return 1
-        x, y, z = neighbor
-        if x < min_x or y < min_y or z < min_z or x > max_x or y > max_y or z > max_z:
-            return 1000000000000000000
-        else:
-            return 1000000000000000000 if neighbor in points else 1
-    def adjFunc(data):
-        _, current = data
-        x, y, z = current
-        return set([ (x + 1, y, z), ( x - 1, y, z), (x, y + 1, z), (x, y - 1, z), (x, y, z + 1), (x, y, z - 1) ])
-    def scoreFunc(grid, current, neighbor):
-        if neighbor in valid_neighbors: return 1
-        if current in points: return 1000000000000000000
-        if neighbor in points: return 1000000000000000000
-        x, y, z = neighbor
-        if x < min_x or y < min_y or z < min_z or x > max_x or y > max_y or z > max_z:
-            return 1000000000000000000
-        return 1
+valid_neighbors = set()
+seen = { way_outside_point }
+stack = deque([ way_outside_point ])
+
+while stack:
+    point = stack.popleft()
+    x, y, z = point
+
+    neighbors = { (x + 1, y, z), ( x - 1, y, z), (x, y + 1, z), (x, y - 1, z), (x, y, z + 1), (x, y, z - 1) }
+
     for neighbor in neighbors:
-        if neighbor in invalid_neighbors:
+        nx, ny, nz = neighbor
+        if neighbor in seen or nx < min_x or ny < min_y or nz < min_z or nx > max_x or ny > max_y or nz > max_z:
+            seen.add(neighbor)
             continue
-        if neighbor not in valid_neighbors:
-            best_path = aStar(None, way_outside_point, neighbor, heuristic, adjFunc, scoreFunc)
+
+        if neighbor in points:
+            valid_neighbors.add(point)
         else:
-            best_path = []
-        if best_path is None:
-            invalid_neighbors.add(neighbor)
-            continue
-        intersection = points.intersection(set(best_path))
-        if len(intersection) == 0:
-            for item in best_path:
-                valid_neighbors.add(item)
-            valid_neighbors.add(neighbor)
+            stack.append(neighbor)
+            seen.add(neighbor)
+
+surface_area = 0
+for valid in valid_neighbors:
+    x, y, z = valid
+    neighbors = { (x + 1, y, z), ( x - 1, y, z), (x, y + 1, z), (x, y - 1, z), (x, y, z + 1), (x, y, z - 1) }
+
+    for neighbor in neighbors:
+        if neighbor in points:
             surface_area += 1
+
 print(surface_area)
