@@ -6,12 +6,13 @@ INPUT_DATA = [parse("Blueprint {:d}: Each ore robot costs {:d} ore. Each clay ro
                     "Each obsidian robot costs {:d} ore and {:d} clay. Each geode robot costs {:d} ore and {:d} obsidian.", x) for x in INPUT_DATA]
 
 class Blueprint:
-    def __init__(self, id):
+    def __init__(self, data):
+        id, ore, clay, obsid_ore, obsid_clay, geode_ore, geode_obsid  = data
         self.id = id
-        self.ore = 0
-        self.clay = 0
-        self.obsidian = 0
-        self.geode = 0
+        self.ore = ore
+        self.clay = clay
+        self.obsidian = (obsid_ore, obsid_clay)
+        self.geode = (geode_ore, geode_obsid)
 
     def __repr__(self):
         return f"{self.id} - O{self.ore}, C{self.clay}, Ob{self.obsidian}, G{self.geode}"
@@ -22,14 +23,7 @@ class Blueprint:
 
 blueprints = []
 for i, blueprint in enumerate(INPUT_DATA, 1):
-    id, ore, clay, obsid_ore, obsid_clay, geode_ore, geode_obsid  = blueprint
-    assert(id == i)
-
-    bp = Blueprint(id)
-    bp.ore = ore
-    bp.clay = clay
-    bp.obsidian = (obsid_ore, obsid_clay)
-    bp.geode = (geode_ore, geode_obsid)
+    bp = Blueprint(blueprint)
     blueprints.append(bp)
 
 def run_sim_2(blueprint: Blueprint, max_tick: int):
