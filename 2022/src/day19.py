@@ -38,7 +38,6 @@ def run_sim_2(blueprint: Blueprint, max_tick: int):
 
         if tick == max_tick:
             max_val = max(max_val, num_geode)
-            #results[state] = num_geode
             continue
 
         remaining_ticks = max_tick - tick
