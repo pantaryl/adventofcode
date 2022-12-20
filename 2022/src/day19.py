@@ -28,15 +28,17 @@ for i, blueprint in enumerate(INPUT_DATA, 1):
 
 def run_sim_2(blueprint: Blueprint, max_tick: int):
     max_val = 0
-    stack   = [(1, 1, 0, 0, 0, 0, 0, 0, 0)]
+    stack   = [((1, 1, 0, 0, 0, 0, 0, 0, 0), "")]
     seen    = set()
+    results = {}
 
     while stack:
-        state = stack.pop()
+        state, history = stack.pop()
 
         tick, num_ore_r, num_ore, num_clay_r, num_clay, num_obsid_r, num_obsid, num_geode_r, num_geode = state
 
         if tick == max_tick:
+            results[state] = (num_geode, history)
             max_val = max(max_val, num_geode)
             continue
 
@@ -57,7 +59,7 @@ def run_sim_2(blueprint: Blueprint, max_tick: int):
 
         if num_ore >= blueprint.geode[0] and num_obsid >= blueprint.geode[1]:
             # Add an option to build a geode
-            stack.append((
+            stack.append(((
                 tick + 1,
                 num_ore_r,
                 num_ore - blueprint.geode[0] + num_ore_r,
@@ -67,10 +69,10 @@ def run_sim_2(blueprint: Blueprint, max_tick: int):
                 num_obsid - blueprint.geode[1] + num_obsid_r,
                 num_geode_r + 1,
                 num_geode + num_geode_r
-            ))
+            ), history + ",+Geode"))
         if num_ore >= blueprint.obsidian[0] and num_clay >= blueprint.obsidian[1] and num_obsid_r < blueprint.geode[1]:
             # Add an option to build an obsidian
-            stack.append((
+            stack.append(((
                 tick + 1,
                 num_ore_r,
                 num_ore - blueprint.obsidian[0] + num_ore_r,
@@ -80,10 +82,10 @@ def run_sim_2(blueprint: Blueprint, max_tick: int):
                 num_obsid + num_obsid_r,
                 num_geode_r,
                 num_geode + num_geode_r
-            ))
+            ), history + ",+Obsid"))
         if num_ore >= blueprint.clay and num_clay_r < blueprint.obsidian[1]:
             # Add an option to build an clay
-            stack.append((
+            stack.append(((
                 tick + 1,
                 num_ore_r,
                 num_ore - blueprint.clay + num_ore_r,
@@ -93,10 +95,10 @@ def run_sim_2(blueprint: Blueprint, max_tick: int):
                 num_obsid + num_obsid_r,
                 num_geode_r,
                 num_geode + num_geode_r
-            ))
+            ), history + ",+Clay"))
         if num_ore >= blueprint.ore and num_ore_r < blueprint.max_ore_spend:
             # Add an option to build an clay
-            stack.append((
+            stack.append(((
                 tick + 1,
                 num_ore_r + 1,
                 num_ore - blueprint.ore + num_ore_r,
@@ -106,10 +108,10 @@ def run_sim_2(blueprint: Blueprint, max_tick: int):
                 num_obsid + num_obsid_r,
                 num_geode_r,
                 num_geode + num_geode_r
-            ))
+            ), history + ",+Ore"))
 
         # Let's add wait last.
-        stack.append((
+        stack.append(((
             tick + 1,
             num_ore_r,
             num_ore + num_ore_r,
@@ -119,11 +121,12 @@ def run_sim_2(blueprint: Blueprint, max_tick: int):
             num_obsid + num_obsid_r,
             num_geode_r,
             num_geode + num_geode_r
-        ))
+        ), history + ",Wait"))
+
+    #import pprint
+    #pprint.PrettyPrinter().pprint([(key, value[1]) for key, value in results.items() if value[0] == max_val])
 
     return max_val
-
-
 
 # Part 1
 total = 0
