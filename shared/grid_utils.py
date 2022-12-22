@@ -29,7 +29,8 @@ def squareGridFromChars(input: List[str],
                 if char == toSetOnValue:
                     grid.add(OrderedComplex(i, j))
             elif conversionDict:
-                grid[OrderedComplex(i, j)] = conversionDict[char]
+                if conversionDict[char] is not None:
+                    grid[OrderedComplex(i, j)] = conversionDict[char]
             elif isInts:
                 grid[OrderedComplex(i, j)] = int(char)
             else:
@@ -56,6 +57,12 @@ def getAllSquareNeighbors() -> List[OrderedComplex]:
         OrderedComplex( 0 + 1j), # down
         OrderedComplex( 1 + 1j), # down-right
     ]
+
+def get_min_max(positions: List[complex]):
+    x_dim = (min([int(x.real) for x in positions]), max([int(x.real) for x in positions]))
+    y_dim = (min([int(x.imag) for x in positions]), max([int(x.imag) for x in positions]))
+
+    return x_dim, y_dim
 
 def printSetGrid(known_pos: Set[complex],
                  char_table: Optional[Dict[complex, str]],
