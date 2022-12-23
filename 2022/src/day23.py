@@ -3,8 +3,7 @@ from shared import *
 # Input data is in INPUT_DATA.
 INPUT_DATA = [x for x in INPUT_DATA]
 
-grid  = squareGridFromChars(INPUT_DATA)
-elves = { pos for pos, value in grid.items() if value == '#' }
+elves  = squareGridFromChars(INPUT_DATA, toSetOnValue='#')
 
 rules = [
     # North
