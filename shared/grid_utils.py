@@ -64,6 +64,13 @@ def get_min_max(positions: List[complex]):
 
     return x_dim, y_dim
 
+def grid_ranges(positions: Iterable[complex]):
+    x_dim, y_dim = get_min_max(positions)
+    return range(x_dim[0], x_dim[1] + 1), range(y_dim[0], y_dim[1] + 1)
+
+def complex_to_int_tuple(pos: complex):
+    return (int(pos.real), int(pos.imag))
+
 def printSetGrid(known_pos: Set[complex],
                  char_table: Optional[Dict[complex, str]],
                  known:str = '#',
