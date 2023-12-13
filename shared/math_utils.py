@@ -14,6 +14,12 @@ def overlap_1d(min1, max1, min2, max2):
     return max(0, min(max1, max2) - max(min1, min2)) + \
            1 if max1 <= min2 or min1 <= max2 else 0
 
+def is_power_of_two(n):
+    return (n != 0) and (n & (n-1) == 0)
+
+def bit_count(self):
+    return bin(self).count("1")
+
 ########################################################################################################################
 # This came courtesy of some helpful research regarding Chinese Remainder Theorem,
 # which is number theory I am 100% not familiar with.
