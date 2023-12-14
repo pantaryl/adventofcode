@@ -9,6 +9,18 @@ from functools import reduce # Python version 3.x
 def lcm(integers):
     return reduce(lambda a, b: a * b // gcd(a, b), integers)
 
+# If you're looking for cycles with state changes, record a dict of state: iteration#.
+# Then when you find your state again in the dict, you can use a modulo to determine where you will be at the end.
+#
+#   if hash in dict:
+#              # Start  #  # Period     #
+#       return dict[hash], i - dict[hash]
+#   dict[hash] = i
+#
+# ...
+#
+# index = start + ((end_iteration - start) % period)
+
 # For 1D segment overlaps:
 def overlap_1d(min1, max1, min2, max2):
     return max(0, min(max1, max2) - max(min1, min2)) + \
