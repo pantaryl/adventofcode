@@ -14,6 +14,113 @@ EMPTY_CHAR  = ' '
 def manhattanDistance(start: complex, end:complex):
     return abs(int(start.real) - int(end.real)) + abs(int(start.imag) - int(end.imag))
 
+class Grid:
+    def __init__(self,
+                 input: List[str],
+                 isInts=False,
+                 conversionDict: dict = None,
+                 toSetOnValue = None):
+        self.data : Union[Dict[complex, Any], Set[Any]] = {}
+
+        self.is_set = toSetOnValue
+
+        if toSetOnValue:
+            self.data = set()
+        else:
+            self.data = {}
+
+        for j, line in enumerate(input):
+            for i, char in enumerate(line):
+                if toSetOnValue:
+                    if char == toSetOnValue:
+                        self.data.add(OrderedComplex(i, j))
+                elif conversionDict:
+                    if conversionDict[char] is not None:
+                        self.data[OrderedComplex(i, j)] = conversionDict[char]
+                elif isInts:
+                    self.data[OrderedComplex(i, j)] = int(char)
+                else:
+                    self.data[OrderedComplex(i, j)] = char
+
+        self.width  = len(input[0])
+        self.height = len(input)
+
+        self.x_range = range(self.width)
+        self.y_range = range(self.height)
+
+    def print(self,
+              char_table: Optional[Dict[complex, str]],
+              known: str = '#',
+              empty: str = '.',
+              known_pos: Optional[Set[complex]] = None,
+              x_dim: Optional[Tuple[int, int]] = None,
+              y_dim: Optional[Tuple[int, int]] = None):
+
+        if known_pos is None:
+            if self.is_set:
+                known_pos = self.data
+            else:
+                known_pos = self.data.keys()
+
+        if x_dim is None:
+            x_dim = (min([int(x.real) for x in known_pos]), max([int(x.real) for x in known_pos]))
+        if y_dim is None:
+            y_dim = (min([int(x.imag) for x in known_pos]), max([int(x.imag) for x in known_pos]))
+
+        for y in range(y_dim[0], y_dim[1] + 1):
+            for x in range(x_dim[0], x_dim[1] + 1):
+                pos = complex(x, y)
+                if pos in known_pos:
+                    if char_table is None:
+                        print(known, end='')
+                    else:
+                        print(char_table[pos], end='')
+                else:
+                    if char_table and pos in char_table:
+                        print(char_table[pos], end='')
+                    else:
+                        print(empty, end='')
+            print()
+
+    def rotate(self, dir: int):
+        if self.is_set:
+            raise Exception
+
+        assert dir in (-1, 1)
+        self.data = {complex(dir * (self.width - 1), 0) + (pos * complex(0, dir)): value for pos, value in self.items()}
+
+    def __str__(self):
+        if self.is_set: return str(self.data)
+
+        return "".join([str(self.data[complex(x, y)]) for x in self.x_range for y in self.y_range])
+
+    def __hash__(self):
+        if self.is_set:
+            raise Exception
+
+        return hash(str(self))
+
+    def __getitem__(self, key):
+        if self.is_set:
+            raise Exception
+
+        return self.data[key]
+
+    def __setitem__(self, key, value):
+        if self.is_set:
+            raise Exception
+
+        self.data[key] = value
+
+    def items(self):
+        return self.data.items()
+
+    def keys(self):
+        return self.data.keys()
+
+    def values(self):
+        return self.data.values()
+
 def squareGridFromChars(input: List[str],
                         isInts=False,
                         conversionDict: dict = None,
@@ -70,6 +177,10 @@ def grid_ranges(positions: Iterable[complex]):
 
 def complex_to_int_tuple(pos: complex):
     return (int(pos.real), int(pos.imag))
+
+def grid_to_hash(grid: Dict[complex, Any]):
+    x_range, y_range = grid_ranges(grid.keys())
+    return hash("".join([str(grid[complex(x, y)]) for x in x_range for y in y_range]))
 
 def printSetGrid(known_pos: Set[complex],
                  char_table: Optional[Dict[complex, str]],
