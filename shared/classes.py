@@ -23,6 +23,13 @@ class OrderedComplex(complex):
     def __sub__(self, other):
         return OrderedComplex(complex(self.real, self.imag) - complex(other.real, other.imag))
 
+    def __mul__(self, other):
+        return OrderedComplex(complex(self.real, self.imag) * complex(other.real, other.imag))
+
+    def rot(self, dir):
+        assert dir in (1, -1)
+        return self * OrderedComplex(0, dir)
+
 class Vector3:
     x: int
     y: int

@@ -48,6 +48,14 @@ class Grid:
         self.x_range = range(self.width)
         self.y_range = range(self.height)
 
+    @property
+    def tl(self):
+        return OrderedComplex(0, 0)
+
+    @property
+    def br(self):
+        return OrderedComplex(self.width - 1, self.height -1)
+
     def print(self,
               char_table: Optional[Dict[complex, str]],
               known: str = '#',
@@ -99,6 +107,12 @@ class Grid:
             raise Exception
 
         return hash(str(self))
+
+    def __contains__(self, key):
+        if self.is_set:
+            raise Exception
+
+        return key in self.data
 
     def __getitem__(self, key):
         if self.is_set:

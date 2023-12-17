@@ -25,7 +25,14 @@ def mergeIntervals(intervals):
 
     return stack
 
-def aStar(grid, start, goal, heuristic, adjFunc, scoreFunc, metGoalFunc=None, printStateFunc=None):
+def aStar(grid,
+          start,
+          goal,
+          heuristic,
+          adjFunc,
+          scoreFunc,
+          metGoalFunc=None,
+          printStateFunc=None):
     def reconstructPath(path, current):
         totalPath = deque([ current ])
         while current in path:
