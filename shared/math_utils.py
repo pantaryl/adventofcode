@@ -1,6 +1,7 @@
 from itertools import combinations, permutations
-from math import gcd # Python versions 3.5 and above
+from math import hypot, gcd # Python versions 3.5 and above
 from functools import reduce # Python version 3.x
+from typing import List
 
 # When encountering problems that deal with unbounded increasing numbers and you need to determine the cycles of them,
 # you can simply keep moduloing the growing numbers by the least common multiple (LCM) of all of the cycle intervals.
@@ -20,6 +21,45 @@ def lcm(integers):
 # ...
 #
 # index = start + ((end_iteration - start) % period)
+
+# To find the area of a strange shaped, closed polygon, apply the shoelace formula.
+# https://en.wikipedia.org/wiki/Shoelace_formula
+#       running_total += (current.x * next.y) - (current.y * next.x)
+# If the area is inclusive (includes the edges), then:
+#       running_total += (length_of_line)
+# The final solution will be:
+#       (running_total // 2) + 1
+def shoelace(positions: List[complex], inclusive: bool = False):
+    start   = positions[0]
+    current = start
+
+    running_total = 0
+    edges         = 0
+    for i, next in enumerate(positions[1:]):
+        running_total += (int(current.real) * int(next.imag)) - \
+                         (int(current.imag) * int(next.real))
+
+        edges += int(hypot(int(next.real) - int(current.real),
+                           int(next.imag) - int(current.imag)))
+
+        current = next
+
+    running_total += (int(current.real) * int(start.imag)) - \
+                     (int(current.imag) * int(start.real))
+
+    edges += int(hypot(int(start.real) - int(current.real),
+                       int(start.imag) - int(current.imag)))
+
+    # Area from shoelace:
+    area = running_total // 2
+
+    # Pick's theorem
+    area = area - edges // 2 + 1
+
+    if inclusive:
+        area += edges
+
+    return area
 
 # For 1D segment overlaps:
 def overlap_1d(min1, max1, min2, max2):
