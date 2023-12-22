@@ -135,6 +135,9 @@ class Grid:
     def values(self):
         return self.data.values()
 
+    def get(self, key, default):
+        return self.data.get(key, default)
+
 def squareGridFromChars(input: List[str],
                         isInts=False,
                         conversionDict: dict = None,
